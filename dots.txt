@@ -1,0 +1,29 @@
+from PIL import Image
+import numpy as np
+
+# Load the image
+image_path = "/mnt/data/IMG_20240602_052712_379.jpg"
+image = Image.open(image_path).convert("L")  # Convert to grayscale
+
+# Resize the image to a manageable size
+image = image.resize((100, 100))
+
+# Convert image to numpy array
+image_array = np.array(image)
+
+# Define a threshold to determine what counts as a dot
+threshold = 128
+
+# Generate coordinates for dots
+dots = []
+for y in range(image_array.shape[0]):
+    for x in range(image_array.shape[1]):
+        if image_array[y, x] < threshold:  # Darker pixels become dots
+            dots.append((x, y))
+
+# Save the dot coordinates to a file
+with open("dots.txt", "w") as file:
+    for dot in dots:
+        file.write(f"{dot[0]},{dot[1]}\n")
+
+...
